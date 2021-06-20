@@ -1,0 +1,14 @@
+version: '3.8'
+
+services: 
+    app:
+        build: .
+        container_name: video_catalog_app
+        entrypoint: ./entrypoint.sh
+        restart: always
+        tty: true
+        volumes: 
+            - .:/app
+            - /app/node_modules
+        ports: 
+            - 3000:3000
