@@ -6,7 +6,11 @@ import {
   Param,
   Delete,
   Put,
+  HttpException,
+  HttpStatus,
+  HttpCode,
 } from '@nestjs/common';
+// import { Response } from 'express';
 import { UsersService } from './users.service';
 import { CreateUserDto } from './dto/create-user.dto';
 import { UpdateUserDto } from './dto/update-user.dto';
@@ -28,16 +32,30 @@ export class UsersController {
 
   @Get(':id')
   findOne(@Param('id') id: number): User {
-    return this.usersService.findOne(+id);
+    const user = this.usersService.findOne(id);
+    if (!user) {
+      throw new HttpException('User not found', HttpStatus.NOT_FOUND);
+    }
+    return user;
   }
 
   @Put(':id')
   update(@Param('id') id: number, @Body() updateUserDto: UpdateUserDto): User {
-    return this.usersService.update(id, updateUserDto);
+    const user = this.usersService.update(id, updateUserDto);
+    if (!user) {
+      throw new HttpException('User not found', HttpStatus.NOT_FOUND);
+    }
+    return user;
   }
 
   @Delete(':id')
-  remove(@Param('id') id: string) {
-    return this.usersService.remove(+id);
+  @HttpCode(204)
+  remove(@Param('id') id: number) {
+    const user = this.usersService.remove(id);
+    if (user) {
+      return;
+    } else {
+      throw new HttpException('User not found', HttpStatus.NOT_FOUND);
+    }
   }
 }

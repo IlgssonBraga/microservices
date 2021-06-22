@@ -38,7 +38,7 @@ export class UsersService {
   }
 
   findOne(id: number): User {
-    const user = this.users.find((user) => user.id === id);
+    const user = this.users.find((user) => user.id == id);
     return user;
   }
 
@@ -54,7 +54,11 @@ export class UsersService {
   }
 
   remove(id: number) {
-    const userIndex = this.users.findIndex((user) => user.id === id);
-    this.users.splice(userIndex, 1);
+    const userIndex = this.users.findIndex((user) => user.id == id);
+    if (userIndex >= 0) {
+      return this.users.splice(userIndex, 1);
+    }
+
+    return false;
   }
 }
