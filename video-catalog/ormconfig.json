@@ -1,0 +1,18 @@
+{
+    "type": "postgres",
+    "host": "localhost",
+    "port": 5432,
+    "username": "postgres",
+    "password": "podman",
+    "database": "video-catalog",
+    "entities": [
+        "dist/**/*.entity{.ts,.js}"
+    ],
+    "synchronize": false,
+    "cli": {
+        "migrationsDir": "src/database/migrations"
+    },
+    "migrations": [
+        "src/database/migrations/*.ts"
+    ]
+}

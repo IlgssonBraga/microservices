@@ -1,28 +1,24 @@
-import { ConfigModule, ConfigService } from '@nestjs/config';
-import {
-  TypeOrmModuleAsyncOptions,
-  TypeOrmModuleOptions,
-} from '@nestjs/typeorm';
+import { TypeOrmModuleOptions } from '@nestjs/typeorm';
+import { registerAs } from '@nestjs/config';
+import { config as setConfig } from 'dotenv';
 
-export default class TypeOrmConfig {
-  static getOrmConfig(configService: ConfigService): TypeOrmModuleOptions {
-    return {
-      type: 'postgres',
-      host: process.env.DB_HOST,
-      port: parseInt(process.env.DB_HOST),
-      username: process.env.DB_USER,
-      password: process.env.DB_PASS,
-      database: process.env.DB_DATABASE,
-      entities: [],
-      synchronize: true,
-    };
-  }
-}
+setConfig();
+setConfig({ path: '.env' }); // use this if you use another .env file. Take the two setConfig if you use .env + other.env
 
-export const typeOrmModule: TypeOrmModuleAsyncOptions = {
-  imports: [ConfigModule],
-  useFactory: async (
-    configService: ConfigService,
-  ): Promise<TypeOrmModuleOptions> => TypeOrmConfig.getOrmConfig(configService),
-  inject: [ConfigService],
-};
+export default registerAs(
+  'typeOrmConfig',
+  (): TypeOrmModuleOptions => ({
+    type: 'postgres',
+    host: process.env.DB_HOST,
+    port: Number(process.env.DB_PORT),
+    username: process.env.DB_USER,
+    password: process.env.DB_PASS,
+    database: process.env.DB_DATABASE,
+    entities: ['dist/**/*.entity{.ts,.js}'],
+    synchronize: false,
+    cli: {
+      migrationsDir: 'src/database/migrations',
+    },
+    migrations: ['src/database/migrations/*.ts'],
+  }),
+);
