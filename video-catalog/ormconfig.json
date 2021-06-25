@@ -6,7 +6,7 @@
     "password": "podman",
     "database": "video-catalog",
     "entities": [
-        "dist/**/*.entity{.ts,.js}"
+        "src/models/**/*.entity.ts"
     ],
     "synchronize": false,
     "cli": {
