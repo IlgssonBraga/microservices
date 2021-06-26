@@ -6,11 +6,13 @@ services:
         container_name: video-catalog-db
         restart: always
         tty: true
+        env_file:
+            - .env
         volumes: 
             - .docker/postgres/db:/var/lib/postgresql/data
         environment:
-            - POSTGRES_DB=video-catalog
-            - POSTGRES_PASSWORD=podman
+            - POSTGRES_DB=${DB_DATABASE}
+            - POSTGRES_PASSWORD=${DB_PASS}
         ports: 
             - 5432:5432
         networks:
@@ -24,10 +26,11 @@ services:
             - .env
         tty: true
         environment:
-            - DB_HOST=db
-            - DB_DATABASE=video-catalog
-            - DB_USER=postgres
-            - DB_PASS=podman
+            - DB_HOST=${DB_HOST}
+            - DB_DATABASE=${DB_DATABASE}
+            - DB_USER=${DB_USER}
+            - DB_PASS=${DB_PASS}
+            - DB_PORT=${DB_PORT}
         volumes: 
             - .:/app
             - /app/node_modules
