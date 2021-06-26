@@ -1,18 +1,18 @@
 {
     "type": "postgres",
-    "host": "localhost",
+    "host": "db",
     "port": 5432,
     "username": "postgres",
     "password": "podman",
     "database": "video-catalog",
     "entities": [
-        "src/models/**/*.entity.ts"
+        "/app/src/models/**/*.entity.{js,ts}"
     ],
     "synchronize": false,
     "cli": {
-        "migrationsDir": "src/database/migrations"
+        "migrationsDir": "/app/src/database/migrations"
     },
     "migrations": [
-        "src/database/migrations/*.ts"
+        "/app/src/database/migrations/*.{js,ts}"
     ]
 }

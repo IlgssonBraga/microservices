@@ -1,12 +1,33 @@
 version: '3.8'
 
 services: 
+    db:
+        build: .docker/postgres
+        container_name: video_catalog_db
+        restart: always
+        tty: true
+        volumes: 
+            - .docker/postgres/db:/var/lib/postgresql/data
+        environment:
+            - POSTGRES_DB=video-catalog
+            - POSTGRES_PASSWORD=podman
+        ports: 
+            - 5432:5432
+        networks:
+            - app-network
     app:
         build: .
         container_name: video_catalog_app
         entrypoint: ./entrypoint.sh
         restart: always
+        env_file:
+            - .env
         tty: true
+        environment:
+            - DB_HOST=db
+            - DB_DATABASE=video-catalog
+            - DB_USER=postgres
+            - DB_PASS=podman
         volumes: 
             - .:/app
             - /app/node_modules
@@ -14,7 +35,10 @@ services:
             - 3000:3000
         networks:
             - app-network
-
+        depends_on:
+            - db
+    
+    
 
     nginx:
         build: .docker/nginx

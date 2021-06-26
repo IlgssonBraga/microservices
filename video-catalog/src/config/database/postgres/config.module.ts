@@ -1,7 +1,7 @@
 import { TypeOrmModuleOptions } from '@nestjs/typeorm';
 import { registerAs } from '@nestjs/config';
 import { config as setConfig } from 'dotenv';
-import { join } from 'path';
+import { resolve } from 'path';
 
 setConfig();
 setConfig({ path: '.env' }); // use this if you use another .env file. Take the two setConfig if you use .env + other.env
@@ -15,11 +15,30 @@ export default registerAs(
     username: process.env.DB_USER,
     password: process.env.DB_PASS,
     database: process.env.DB_DATABASE,
-    entities: ['src/models/**/*.entity.ts'],
+    entities: [
+      resolve(__dirname, '..', '..', '..', 'models', '**', '*.entity.{js,ts}'),
+    ],
     synchronize: false,
     cli: {
-      migrationsDir: 'src/database/migrations',
+      migrationsDir: resolve(
+        __dirname,
+        '..',
+        '..',
+        '..',
+        'database',
+        'migrations',
+      ),
     },
-    migrations: ['src/database/migrations/*.ts'],
+    migrations: [
+      resolve(
+        __dirname,
+        '..',
+        '..',
+        '..',
+        'database',
+        'migrations',
+        '*.{js,ts}',
+      ),
+    ],
   }),
 );
