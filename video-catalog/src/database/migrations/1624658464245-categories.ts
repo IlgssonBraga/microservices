@@ -23,6 +23,7 @@ export class categories1624658464245 implements MigrationInterface {
             name: 'name',
             type: 'varchar',
             isNullable: false,
+            isUnique: true,
           },
           {
             name: 'description',

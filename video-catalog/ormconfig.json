@@ -6,13 +6,13 @@
     "password": "podman",
     "database": "video-catalog",
     "entities": [
-        "/app/src/models/**/*.entity.{js,ts}"
+        "/home/ilgssonbraga/Documents/Projects/nodejs/microservices-fullcycle/video-catalog/src/models/**/*.entity.{js,ts}"
     ],
     "synchronize": false,
     "cli": {
-        "migrationsDir": "/app/src/database/migrations"
+      "migrationsDir": "/home/ilgssonbraga/Documents/Projects/nodejs/microservices-fullcycle/video-catalog/src/database/migrations"
     },
     "migrations": [
-        "/app/src/database/migrations/*.{js,ts}"
+        "/home/ilgssonbraga/Documents/Projects/nodejs/microservices-fullcycle/video-catalog/src/database/migrations/*.{js,ts}"
     ]
 }
