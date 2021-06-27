@@ -47,20 +47,20 @@ export class CategoriesService {
     return categories;
   }
 
-  async findOne(id: number) {
-    const user = await this.categoryRepository.findOneOrFail(id, {
-      where: { deleted_at: null },
+  async findOne(id: string) {
+    const user = await this.categoryRepository.findOneOrFail({
+      where: { id_uuid: id, deleted_at: null },
     });
     return user;
   }
 
-  async update(id: number, updateCategoryDto: UpdateCategoryDto) {
-    await this.categoryRepository.findOneOrFail(id);
+  async update(id: string, updateCategoryDto: UpdateCategoryDto) {
+    await this.categoryRepository.findOneOrFail({ where: { id_uuid: id } });
     const checkName = await this.categoryRepository.findOne({
       where: { name: updateCategoryDto.name },
     });
 
-    if (checkName && checkName.id != id && checkName.deleted_at == null) {
+    if (checkName && checkName.id_uuid != id && checkName.deleted_at == null) {
       throw new HttpErrorException(
         'There is already a category with the same name',
         'Bad Request',
@@ -68,20 +68,23 @@ export class CategoriesService {
       );
     }
 
-    if (checkName && checkName.id != id && checkName.deleted_at != null) {
-      await this.categoryRepository.delete(checkName.id);
+    if (checkName && checkName.id_uuid != id && checkName.deleted_at != null) {
+      await this.categoryRepository.delete({ id: checkName.id });
     }
 
-    await this.categoryRepository.update(id, updateCategoryDto);
-    const category = await this.categoryRepository.findOne(id);
+    await this.categoryRepository.update({ id_uuid: id }, updateCategoryDto);
+    const category = await this.categoryRepository.findOne({ id_uuid: id });
     return category;
   }
 
-  async remove(id: number) {
-    await this.categoryRepository.findOneOrFail(id, {
-      where: { deleted_at: null },
+  async remove(id: string) {
+    await this.categoryRepository.findOneOrFail({
+      where: { id_uuid: id, deleted_at: null },
     });
-    await this.categoryRepository.update(id, { deleted_at: new Date() });
+    await this.categoryRepository.update(
+      { id_uuid: id },
+      { deleted_at: new Date() },
+    );
     return;
   }
 }
