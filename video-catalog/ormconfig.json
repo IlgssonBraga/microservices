@@ -1,18 +1,18 @@
 {
-    "type": "postgres",
-    "host": "db",
-    "port": 5432,
-    "username": "postgres",
-    "password": "podman",
-    "database": "video-catalog",
-    "entities": [
-        "/home/ilgssonbraga/Documents/Projects/nodejs/microservices-fullcycle/video-catalog/src/models/**/*.entity.{js,ts}"
-    ],
-    "synchronize": false,
-    "cli": {
-      "migrationsDir": "/home/ilgssonbraga/Documents/Projects/nodejs/microservices-fullcycle/video-catalog/src/database/migrations"
-    },
-    "migrations": [
-        "/home/ilgssonbraga/Documents/Projects/nodejs/microservices-fullcycle/video-catalog/src/database/migrations/*.{js,ts}"
-    ]
+  "type": "postgres",
+  "host": "localhost",
+  "port": 5432,
+  "username": "postgres",
+  "password": "podman",
+  "database": "video-catalog",
+  "entities": [
+    "/home/ilgssonbraga/Documents/Projects/nodejs/microservices-fullcycle/video-catalog/src/models/**/*.entity.{js,ts}"
+  ],
+  "synchronize": false,
+  "cli": {
+    "migrationsDir": "/home/ilgssonbraga/Documents/Projects/nodejs/microservices-fullcycle/video-catalog/src/database/migrations"
+  },
+  "migrations": [
+    "/home/ilgssonbraga/Documents/Projects/nodejs/microservices-fullcycle/video-catalog/src/database/migrations/*.{js,ts}"
+  ]
 }

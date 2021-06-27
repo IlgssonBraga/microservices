@@ -1,9 +1,8 @@
 import { Injectable } from '@nestjs/common';
-import { HttpErrorByCode } from '@nestjs/common/utils/http-error-by-code.util';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 import { CreateCategoryDto } from './dto/create-category.dto';
-// import { UpdateCategoryDto } from './dto/update-category.dto';
+import { UpdateCategoryDto } from './dto/update-category.dto';
 import { Category } from './entities/category.entity';
 
 @Injectable()
@@ -18,7 +17,7 @@ export class CategoriesService {
       where: { name },
     });
 
-    if (findCategory) {
+    if (findCategory.length > 0) {
       throw new Error('erro');
     }
 
@@ -37,15 +36,21 @@ export class CategoriesService {
     return categories;
   }
 
-  findOne(id: number) {
-    return `This action returns a #${id} category`;
+  async findOne(id: number) {
+    const user = await this.categoryRepository.findOneOrFail(id);
+    return user;
   }
 
-  // update(id: number, updateCategoryDto: UpdateCategoryDto) {
-  //   return `This action updates a #${id} category`;
-  // }
+  async update(id: number, updateCategoryDto: UpdateCategoryDto) {
+    await this.categoryRepository.findOneOrFail(id);
+    await this.categoryRepository.update(id, updateCategoryDto);
+    const category = await this.categoryRepository.findOne(id);
+    return category;
+  }
 
-  remove(id: number) {
-    return `This action removes a #${id} category`;
+  async remove(id: number) {
+    await this.categoryRepository.findOneOrFail(id);
+    await this.categoryRepository.delete(id);
+    return;
   }
 }
