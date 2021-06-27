@@ -4,6 +4,7 @@ import { Repository } from 'typeorm';
 import { CreateCategoryDto } from './dto/create-category.dto';
 import { UpdateCategoryDto } from './dto/update-category.dto';
 import { Category } from './entities/category.entity';
+import HttpErrorException from '../../common/exceptions/http.exception';
 
 @Injectable()
 export class CategoriesService {
@@ -18,7 +19,11 @@ export class CategoriesService {
     });
 
     if (findCategory.length > 0) {
-      throw new Error('erro');
+      throw new HttpErrorException(
+        'There is already a category with the same name',
+        'Bad Request',
+        400,
+      );
     }
 
     const category = this.categoryRepository.create({
@@ -43,6 +48,19 @@ export class CategoriesService {
 
   async update(id: number, updateCategoryDto: UpdateCategoryDto) {
     await this.categoryRepository.findOneOrFail(id);
+
+    const checkName = await this.categoryRepository.findOne({
+      where: { name: updateCategoryDto.name },
+    });
+
+    if (checkName && checkName.id != id) {
+      throw new HttpErrorException(
+        'There is already a category with the same name',
+        'Bad Request',
+        400,
+      );
+    }
+
     await this.categoryRepository.update(id, updateCategoryDto);
     const category = await this.categoryRepository.findOne(id);
     return category;
