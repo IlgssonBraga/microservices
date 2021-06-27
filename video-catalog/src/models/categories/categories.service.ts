@@ -37,7 +37,11 @@ export class CategoriesService {
 
     await this.categoryRepository.save(category);
 
-    return category;
+    const newCategory = await this.categoryRepository.findOne({
+      where: { name },
+    });
+
+    return newCategory;
   }
 
   findAll() {
