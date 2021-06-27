@@ -35,6 +35,12 @@ export class categories1624658464245 implements MigrationInterface {
             default: false,
           },
           {
+            name: 'deleted_at',
+            type: 'timestamp',
+            isNullable: true,
+            default: null,
+          },
+          {
             name: 'created_at',
             type: 'timestamp',
             default: 'now()',

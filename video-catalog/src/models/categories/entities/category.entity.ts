@@ -24,6 +24,9 @@ export class Category {
   is_active: boolean;
 
   @CreateDateColumn()
+  deleted_at: Date;
+
+  @CreateDateColumn()
   created_at: Date;
 
   @UpdateDateColumn()
