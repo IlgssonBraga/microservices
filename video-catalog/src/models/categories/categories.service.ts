@@ -5,6 +5,7 @@ import { CreateCategoryDto } from './dto/create-category.dto';
 import { UpdateCategoryDto } from './dto/update-category.dto';
 import { Category } from './entities/category.entity';
 import HttpErrorException from '../../common/exceptions/http.exception';
+import { validate } from 'uuid';
 
 @Injectable()
 export class CategoriesService {
@@ -52,6 +53,15 @@ export class CategoriesService {
   }
 
   async findOne(id: string) {
+    const uuidIsValid = validate(id);
+    if (!uuidIsValid) {
+      throw new HttpErrorException(
+        'Id is not a valid UUID',
+        'Bad Request',
+        400,
+      );
+    }
+
     const user = await this.categoryRepository.findOneOrFail({
       where: { id_uuid: id, deleted_at: null },
     });
@@ -59,6 +69,14 @@ export class CategoriesService {
   }
 
   async update(id: string, updateCategoryDto: UpdateCategoryDto) {
+    const uuidIsValid = validate(id);
+    if (!uuidIsValid) {
+      throw new HttpErrorException(
+        'Id is not a valid UUID',
+        'Bad Request',
+        400,
+      );
+    }
     await this.categoryRepository.findOneOrFail({ where: { id_uuid: id } });
     const checkName = await this.categoryRepository.findOne({
       where: { name: updateCategoryDto.name },
@@ -82,6 +100,14 @@ export class CategoriesService {
   }
 
   async remove(id: string) {
+    const uuidIsValid = validate(id);
+    if (!uuidIsValid) {
+      throw new HttpErrorException(
+        'Id is not a valid UUID',
+        'Bad Request',
+        400,
+      );
+    }
     await this.categoryRepository.findOneOrFail({
       where: { id_uuid: id, deleted_at: null },
     });
