@@ -45,8 +45,8 @@ export class CategoriesService {
     return newCategory;
   }
 
-  findAll() {
-    const categories = this.categoryRepository.find({
+  async findAll() {
+    const categories = await this.categoryRepository.find({
       where: { deleted_at: null },
     });
     return categories;
