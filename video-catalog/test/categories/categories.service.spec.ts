@@ -21,21 +21,22 @@ describe('CategoriesController', () => {
     categoriesService = await module.get<CategoriesService>(CategoriesService);
   });
 
-  describe('testing categories service', () => {
-    it('testing', async () => {
-      const result = [
-        {
-          id: 1,
-          id_uuid: '6a1476c1-b6b6-4ee5-9a9f-c825e5c47d90',
-          created_at: new Date(1625527154709),
-          updated_at: new Date(1625527154709),
-          deleted_at: null,
-          name: 'teste',
-          description: 'teste',
-          is_active: false,
-        },
-      ];
-      expect(await categoriesService.findAll()).toEqual(result);
+  it('should be able to create one category', async () => {
+    const category = await categoriesService.create({
+      name: 'teste1',
+      description: 'teste1',
     });
+
+    expect(category.name).toEqual('teste1');
+    expect(category.description).toEqual('teste1');
+  });
+
+  it('should be able to return all categories', async () => {
+    const category = await categoriesService.create({
+      name: 'teste',
+      description: 'teste',
+    });
+
+    expect(await categoriesService.findAll()).toContainEqual(category);
   });
 });
